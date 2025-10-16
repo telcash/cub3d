@@ -1,0 +1,65 @@
+NAME = cub3D
+
+GREEN			= \033[0;32m
+RED				= \033[0;31m
+RESET			= \033[0m
+
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -g -I$(LIBFT_DIR) -I$(MLX_DIR) #-fsanitize=address
+MINILIBX_FLAGS = -lmlx -lX11 -lXext -lm
+#MINILIBX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
+#VALGRIND = valgrind --leak-check=full --show-leak-kinds=all \
+		--track-origins=yes --quiet --tool=memcheck --keep-debuginfo=yes
+
+SRC_DIR = sources
+OBJ_DIR = objs
+LIBFT_DIR = libft
+MLX_DIR = minilibx-linux
+#MLX_DIR = minilibx-macos
+LIBFT = $(LIBFT_DIR)/libft.a
+MLX = $(MLX_DIR)/libmlx.a
+
+SRCS = $(addprefix $(SRC_DIR)/, main.c) \
+			$(addprefix $(SRC_DIR)/input/, input.c) \
+			$(addprefix $(SRC_DIR)/render/, render.c) \
+			$(addprefix $(SRC_DIR)/player/, player.c) \
+			$(addprefix $(SRC_DIR)/init/, init.c) \
+
+
+OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+
+all: $(LIBFT) $(NAME) $(EXE)
+#all: $(LIBFT) $(NAME)
+
+$(NAME): 	$(LIBFT) $(MLX) $(OBJS)
+			@mkdir -p $(OBJ_DIR)
+			$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX) $(MINILIBX_FLAGS) -L$(MLX_DIR) -o $(NAME)
+			@echo "$(NAME): $(GREEN)$(NAME) was compiled.$(RESET)"
+			
+
+$(LIBFT):
+				@make -C $(LIBFT_DIR) 
+				@echo "$(LIBFT): $(GREEN)$(LIBFT) was compiled.$(RESET)"
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+				@mkdir -p $(dir $@)
+				$(CC) $(CFLAGS) -c $< -o $@
+$(MLX):
+				@make -C $(MLX_DIR)
+				@echo "$(MLX): $(GREEN)$(MLX) was compiled.$(RESET)"
+
+clean:
+		@echo "$(GREEN)cleaning...$(RESET)"
+		rm -rf $(OBJ_DIR)
+		make -C $(LIBFT_DIR) clean
+		make -C $(MLX_DIR) clean
+		@echo "$(GREEN)$(NAME) is clean.$(RESET)"
+
+fclean: clean
+		rm -f $(NAME)
+		make -C $(LIBFT_DIR) fclean
+		make -C $(MLX_DIR) clean
+
+re:		fclean all
+
+.PHONY: all clean fclean re valgrind exe
