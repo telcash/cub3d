@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   verify_args.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/14 19:45:25 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/16 10:26:49 by csalazar         ###   ########.fr       */
+/*   Created: 2025/10/16 09:59:16 by csalazar          #+#    #+#             */
+/*   Updated: 2025/10/16 10:18:05 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/Cube3D.h"
+#include "../../include/Cube3D.h"
 
-int main(int argc, char **argv)
+int verify_args(int argc, char **argv)
 {
-    t_data data;
-
-    if (verify_args(argc, argv))
-        return (1);
-    init_data(&data);
-    mlx_hook(data.win, 2, 1L<<0, key_press, &data.player);
-    mlx_hook(data.win, 3, 1L<<1, key_release, &data.player);
-    mlx_loop_hook(data.mlx, draw_loop, &data);
-    mlx_loop(data.mlx);
+    if (argc != 2)
+        return (ft_putendl_fd(ERR_NUM_ARGS, 2), 1);
+    if (ft_strlen(argv[1]) < 5 || ft_strncmp(&argv[1][ft_strlen(argv[1]) - 4], ".cub", 4) != 0)
+        return (ft_putendl_fd(ERR_FILE_CUB, 2), 1);
+    return (0);
 }

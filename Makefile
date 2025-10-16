@@ -24,6 +24,7 @@ SRCS = $(addprefix $(SRC_DIR)/, main.c) \
 			$(addprefix $(SRC_DIR)/render/, render.c) \
 			$(addprefix $(SRC_DIR)/player/, player.c) \
 			$(addprefix $(SRC_DIR)/init/, init.c) \
+			$(addprefix $(SRC_DIR)/parsing/, verify_args.c) \
 
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

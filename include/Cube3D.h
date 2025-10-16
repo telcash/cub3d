@@ -14,6 +14,9 @@
 
 # define PI 3.14159265359
 
+# define ERR_NUM_ARGS "Invalid number of arguments"
+# define ERR_FILE_CUB "Invalid file. Expected *.cub"
+
 # include "libft.h"
 # include "mlx.h"
 # include <X11/X.h>
@@ -56,5 +59,6 @@ int    key_release(int keycode, t_player *player);
 void move_player(t_player *player);
 int draw_loop(t_data *data);
 void init_data(t_data *data);
+int verify_args(int argc, char **argv);
 
 #endif
