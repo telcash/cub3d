@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:03:18 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/20 09:00:26 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/20 10:04:44 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ bool touch(float px, float py, t_data *data)
 
     x = (int)(px / BLOCK);
     y = (int)(py / BLOCK);
-    printf("Touching at grid (%d, %d)\n", x, y);
+    if (x < 0 || x >= data->map.width || y < 0 || y >= data->map.height)
+        return true;
     if(data->map.grid[y][x] == '1')
         return true;
     return false;
@@ -83,11 +84,11 @@ void draw_line(t_data *data, float start_x, int i)
     while (y < HEIGHT)
     {
         if (y < start)
-            put_pixel(i, y, 0x87CEEB, data); // Sky color
+            put_pixel(i, y, rgb_to_hex(data->c), data); // Sky color
         else if (y >= start && y <= end)
             put_pixel(i, y, 0x8B4513, data); // Wall color
         else
-            put_pixel(i, y, 0x228B22, data); // Floor color
+            put_pixel(i, y, rgb_to_hex(data->f), data); // Floor color
         y++;
     }
 }
@@ -99,17 +100,19 @@ int draw_loop(t_data *data)
     int i;
 
     t_player *player = &data->player;
-    move_player(player);
-    clear_image(data);
-    fraction = PI / 3 / WIDTH;
-    start_x = player->angle - (PI / 6);
-    i = 0;
-    while (i < WIDTH)
+    if (move_player(player))
     {
-        draw_line(data, start_x, i);
-        start_x += fraction;
-        i++;
+        clear_image(data);
+        fraction = PI / 3 / WIDTH;
+        start_x = player->angle - (PI / 6);
+        i = 0;
+        while (i < WIDTH)
+        {
+            draw_line(data, start_x, i);
+            start_x += fraction;
+            i++;
+        }
+        mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
     }
-    mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
     return 0;
 }

@@ -1,8 +1,8 @@
 #ifndef CUB3D_H
 # define CUB3D_H
 
-# define WIDTH 1280
-# define HEIGHT 720
+# define WIDTH 800
+# define HEIGHT 600
 # define BLOCK 64
 
 # define W 119
@@ -99,7 +99,7 @@ typedef struct s_data
 
 int    key_press(int keycode, t_player *player);
 int    key_release(int keycode, t_player *player);
-void move_player(t_player *player);
+int move_player(t_player *player);
 int draw_loop(t_data *data);
 int init_data(t_data *data, char *file);
 int verify_args(int argc, char **argv);
@@ -109,5 +109,6 @@ void free_split(char **split);
 int parse_file(t_data *data, char *file);
 int get_color_from_line(char *line, int i, t_rgb **color);
 int get_map_grid(t_data *data, char *file);
+int rgb_to_hex(t_rgb *color);
 
 #endif

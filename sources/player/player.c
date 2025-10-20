@@ -6,14 +6,14 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:04:39 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/15 10:07:51 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/20 09:43:22 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "../../include/Cube3D.h"
 
-void move_player(t_player *player)
+int move_player(t_player *player)
 {
     int speed = 3;
     float angle_speed = 0.03;
@@ -49,4 +49,6 @@ void move_player(t_player *player)
         player->x -= sin_angle * speed;
         player->y += cos_angle * speed;
     }
+    return (player->rot_left || player->rot_right || player->key_up || player->key_down
+        || player->key_left || player->key_right);
 }
