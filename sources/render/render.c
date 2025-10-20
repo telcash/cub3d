@@ -56,38 +56,55 @@ bool touch(float px, float py, t_data *data)
     return false;
 }
 
+static void	update_wall_bounds(int *top, int *bottom, int height)
+{
+	*top = (HEIGHT / 2) - (height / 2);
+	*bottom = *top + height - 1;
+	if (*top < 0)
+		*top = 0;
+	if (*bottom >= HEIGHT)
+		*bottom = HEIGHT - 1;
+}
+
+static int	sample_texture(const int *texture, int tex_x, float tex_pos,
+		int tex_size)
+{
+	int	tex_y;
+
+	if (!texture)
+		return (0x8B4513);
+	tex_y = (int)tex_pos;
+	if (tex_y < 0)
+		tex_y = 0;
+	else if (tex_y >= tex_size)
+		tex_y = tex_size - 1;
+	return (texture[tex_y * tex_size + tex_x]);
+}
+
 void	draw_line(t_data *data, float start_x, int i)
 {
-	float	dir_x;
-	float	dir_y;
-	float	rx;
-	float	ry;
-	float	prev_x;
-	float	prev_y;
-	float	hit_x;
-	float	hit_y;
-	float	vertical_t;
-	float	horizontal_t;
-	float	distance;
-	bool	vertical_hit;
-	int		wall_top;
-	int		wall_bottom;
-	int		draw_start;
-	int		draw_end;
-	int		y;
-	int		*texture;
-	float	tex_step;
-	float	tex_pos;
-	int		tex_x;
-	int		tex_y;
-	int		color;
-	int		line_height;
-	float	prev_block_x;
-	float	prev_block_y;
-	float	offset;
+	const float	dir_x = cosf(start_x);
+	const float	dir_y = sinf(start_x);
+	float		rx;
+	float		ry;
+	float		prev_x;
+	float		prev_y;
+	float		hit_x;
+	float		hit_y;
+	float		vertical_t;
+	float		horizontal_t;
+	bool		vertical_hit;
+	float		distance;
+	int			line_height;
+	int			draw_start;
+	int			draw_end;
+	int			y;
+	int			tex_x;
+	float		tex_pos;
+	float		tex_step;
+	float		wall_fraction;
+	int			*texture;
 
-	dir_x = cosf(start_x);
-	dir_y = sinf(start_x);
 	rx = data->player.x;
 	ry = data->player.y;
 	prev_x = rx;
@@ -101,27 +118,25 @@ void	draw_line(t_data *data, float start_x, int i)
 	}
 	vertical_t = FLT_MAX;
 	horizontal_t = FLT_MAX;
-	prev_block_x = floorf(prev_x / BLOCK);
-	prev_block_y = floorf(prev_y / BLOCK);
 	if (fabsf(dir_x) > 1e-6f)
 	{
-		float boundary_x;
+		const float boundary_x = ((dir_x > 0.f)
+				? (floorf(prev_x / BLOCK) + 1.f)
+				: floorf(prev_x / BLOCK)) * BLOCK;
+		const float delta = (boundary_x - prev_x) / dir_x;
 
-		boundary_x = ((dir_x > 0.f) ? (prev_block_x + 1.f) : prev_block_x)
-			* BLOCK;
-		vertical_t = (boundary_x - prev_x) / dir_x;
-		if (vertical_t < 0.f)
-			vertical_t = FLT_MAX;
+		if (delta >= 0.f)
+			vertical_t = delta;
 	}
 	if (fabsf(dir_y) > 1e-6f)
 	{
-		float boundary_y;
+		const float boundary_y = ((dir_y > 0.f)
+				? (floorf(prev_y / BLOCK) + 1.f)
+				: floorf(prev_y / BLOCK)) * BLOCK;
+		const float delta = (boundary_y - prev_y) / dir_y;
 
-		boundary_y = ((dir_y > 0.f) ? (prev_block_y + 1.f) : prev_block_y)
-			* BLOCK;
-		horizontal_t = (boundary_y - prev_y) / dir_y;
-		if (horizontal_t < 0.f)
-			horizontal_t = FLT_MAX;
+		if (delta >= 0.f)
+			horizontal_t = delta;
 	}
 	vertical_hit = vertical_t < horizontal_t;
 	if (vertical_t == FLT_MAX && horizontal_t != FLT_MAX)
@@ -130,28 +145,44 @@ void	draw_line(t_data *data, float start_x, int i)
 		vertical_hit = true;
 	if (vertical_hit)
 	{
-		hit_x = ((dir_x > 0.f) ? (prev_block_x + 1.f) : prev_block_x) * BLOCK;
+		hit_x = ((dir_x > 0.f)
+				? (floorf(prev_x / BLOCK) + 1.f)
+				: floorf(prev_x / BLOCK)) * BLOCK;
 		hit_y = prev_y + dir_y * vertical_t;
-		texture = (dir_x > 0.f) ? data->ea_texture : data->we_texture;
-		offset = fmodf(hit_y, BLOCK);
-		if (offset < 0.f)
-			offset += BLOCK;
-		tex_x = (int)((offset / BLOCK) * data->texture_size);
+		wall_fraction = (hit_y / BLOCK) - floorf(hit_y / BLOCK);
+		tex_x = (int)(wall_fraction * data->texture_size);
+		if (tex_x < 0)
+			tex_x = 0;
+		else if (tex_x >= data->texture_size)
+			tex_x = data->texture_size - 1;
+		if (dir_x > 0.f)
+		{
+			texture = data->ea_texture;
+			tex_x = data->texture_size - tex_x - 1;
+		}
+		else
+			texture = data->we_texture;
 	}
 	else
 	{
-		hit_y = ((dir_y > 0.f) ? (prev_block_y + 1.f) : prev_block_y) * BLOCK;
+		hit_y = ((dir_y > 0.f)
+				? (floorf(prev_y / BLOCK) + 1.f)
+				: floorf(prev_y / BLOCK)) * BLOCK;
 		hit_x = prev_x + dir_x * horizontal_t;
-		texture = (dir_y > 0.f) ? data->so_texture : data->no_texture;
-		offset = fmodf(hit_x, BLOCK);
-		if (offset < 0.f)
-			offset += BLOCK;
-		tex_x = (int)((offset / BLOCK) * data->texture_size);
+		wall_fraction = (hit_x / BLOCK) - floorf(hit_x / BLOCK);
+		tex_x = (int)(wall_fraction * data->texture_size);
+		if (tex_x < 0)
+			tex_x = 0;
+		else if (tex_x >= data->texture_size)
+			tex_x = data->texture_size - 1;
+		if (dir_y > 0.f)
+			texture = data->so_texture;
+		else
+		{
+			texture = data->no_texture;
+			tex_x = data->texture_size - tex_x - 1;
+		}
 	}
-	if (tex_x < 0)
-		tex_x = 0;
-	if (tex_x >= data->texture_size)
-		tex_x = data->texture_size - 1;
 	distance = sqrtf((hit_x - data->player.x) * (hit_x - data->player.x)
 			+ (hit_y - data->player.y) * (hit_y - data->player.y));
 	if (distance < 1e-4f)
@@ -159,40 +190,21 @@ void	draw_line(t_data *data, float start_x, int i)
 	line_height = (BLOCK * HEIGHT) / distance;
 	if (line_height < 1)
 		line_height = 1;
-	wall_top = (HEIGHT / 2) - (line_height / 2);
-	wall_bottom = wall_top + line_height - 1;
-	draw_start = (wall_top < 0) ? 0 : wall_top;
-	draw_end = (wall_bottom >= HEIGHT) ? HEIGHT - 1 : wall_bottom;
+	update_wall_bounds(&draw_start, &draw_end, line_height);
 	tex_step = (float)data->texture_size / (float)line_height;
-	tex_pos = (draw_start - wall_top) * tex_step;
-	if (!texture)
-		texture = data->we_texture;
+	tex_pos = (draw_start - ((HEIGHT / 2) - (line_height / 2))) * tex_step;
 	y = 0;
 	while (y < draw_start)
-	{
-		put_pixel(i, y, data->ceiling_color, data);
-		y++;
-	}
+		put_pixel(i, y++, data->ceiling_color, data);
 	while (y <= draw_end)
 	{
-		tex_y = (int)tex_pos;
-		if (tex_y < 0)
-			tex_y = 0;
-		else if (tex_y >= data->texture_size)
-			tex_y = data->texture_size - 1;
-		if (texture)
-			color = texture[tex_y * data->texture_size + tex_x];
-		else
-			color = 0x8B4513;
-		put_pixel(i, y, color, data);
+		put_pixel(i, y, sample_texture(texture, tex_x, tex_pos, data->texture_size),
+			data);
 		tex_pos += tex_step;
 		y++;
 	}
 	while (y < HEIGHT)
-	{
-		put_pixel(i, y, data->floor_color, data);
-		y++;
-	}
+		put_pixel(i, y++, data->floor_color, data);
 }
 
 int draw_loop(t_data *data)
