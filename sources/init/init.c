@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 09:28:55 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/20 08:53:48 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/20 11:08:11 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,25 @@ int init_data(t_data *data, char *file)
     data->so_t_file = NULL;
     data->we_t_file = NULL;
     data->ea_t_file = NULL;
+    data->no_texture = NULL;
+    data->so_texture = NULL;
+    data->we_texture = NULL;
+    data->ea_texture = NULL;
     data->f = NULL;
     data->c = NULL;
     data->file_coords_line = 0;
+    data->texture_size = 0;
+    data->img = NULL;
+    data->addr = NULL;
+    data->bpp = 0;
+    data->line_length = 0;
+    data->endian = 0;
     if (parse_file(data, file))
         return (1);
     data->mlx = mlx_init();
+    if (init_textures(data))
+        return (1);
+    reset_data_img(data);
     data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Game");
     data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
     data->addr = mlx_get_data_addr(data->img, &data->bpp, &data->line_length, &data->endian);

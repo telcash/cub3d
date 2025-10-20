@@ -27,6 +27,7 @@ SRCS = $(addprefix $(SRC_DIR)/, main.c) \
 			$(addprefix $(SRC_DIR)/parsing/, verify_args.c parse_color.c parse_file.c parse_map_grid.c) \
 			$(addprefix $(SRC_DIR)/utils/, utils_1.c) \
 			$(addprefix $(SRC_DIR)/free/, free.c) \
+			$(addprefix $(SRC_DIR)/texture/, texture.c)
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
