@@ -5,7 +5,7 @@ RED				= \033[0;31m
 RESET			= \033[0m
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -I$(LIBFT_DIR) -I$(MLX_DIR) #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -I$(LIBFT_DIR) -I$(MLX_DIR) -fsanitize=address
 MINILIBX_FLAGS = -lmlx -lX11 -lXext -lm
 #MINILIBX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
 #VALGRIND = valgrind --leak-check=full --show-leak-kinds=all \
@@ -24,8 +24,9 @@ SRCS = $(addprefix $(SRC_DIR)/, main.c) \
 			$(addprefix $(SRC_DIR)/render/, render.c) \
 			$(addprefix $(SRC_DIR)/player/, player.c) \
 			$(addprefix $(SRC_DIR)/init/, init.c) \
-			$(addprefix $(SRC_DIR)/parsing/, verify_args.c) \
-
+			$(addprefix $(SRC_DIR)/parsing/, verify_args.c parse_color.c parse_file.c parse_map_grid.c) \
+			$(addprefix $(SRC_DIR)/utils/, utils_1.c) \
+			$(addprefix $(SRC_DIR)/free/, free.c) \
 
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 

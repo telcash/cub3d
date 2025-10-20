@@ -6,47 +6,53 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 09:28:55 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/16 09:31:48 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/20 08:53:48 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/Cube3D.h"
 
 
-char **get_map(void)
+static void init_player(t_player *player)
 {
-    char **map = malloc(sizeof(char *) * 11);
-    map[0] = "11111111111111111111";
-    map[1] = "10000000000000000001";
-    map[2] = "10000000000000000001";
-    map[3] = "10000010000000000001";
-    map[4] = "10000000000000000001";
-    map[5] = "10000001000000000001";
-    map[6] = "10000100000000000001";
-    map[7] = "10000000000000000001";
-    map[8] = "10000000000000000001";
-    map[9] = "11111111111111111111";
-    map[10] = NULL;
-    return (map);
+    player->x = WIDTH / 2;
+    player->y = HEIGHT / 2;
+    player->angle = PI / 2;
+    player->view = '\0';
+    player->row = 0;
+    player->col = 0;
+    player->key_up = false;
+    player->key_down = false;
+    player->key_right = false;
+    player->key_left = false;
+    player->rot_left = false;
+    player->rot_right = false;
 }
-void init_data(t_data *data)
+
+static void init_map(t_map *map)
 {
-    data->player.x = WIDTH / 2;
-    data->player.y = HEIGHT / 2;
-    data->player.angle = PI / 2;
+    map->width = 0;
+    map->height = 0;
+    map->grid = NULL;
+}
 
-    data->player.key_up = false;
-    data->player.key_down = false;
-    data->player.key_right = false;
-    data->player.key_left = false;
-
-    data->player.rot_left = false;
-    data->player.rot_right = false;
-
-    data->map = get_map();
+int init_data(t_data *data, char *file)
+{
+    init_player(&data->player);
+    init_map(&data->map);
+    data->no_t_file = NULL;
+    data->so_t_file = NULL;
+    data->we_t_file = NULL;
+    data->ea_t_file = NULL;
+    data->f = NULL;
+    data->c = NULL;
+    data->file_coords_line = 0;
+    if (parse_file(data, file))
+        return (1);
     data->mlx = mlx_init();
     data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Game");
     data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
     data->addr = mlx_get_data_addr(data->img, &data->bpp, &data->line_length, &data->endian);
     mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+    return (0);
 }

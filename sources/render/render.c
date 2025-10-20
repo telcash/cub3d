@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:03:18 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/16 09:39:39 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/20 09:00:26 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ bool touch(float px, float py, t_data *data)
 
     x = (int)(px / BLOCK);
     y = (int)(py / BLOCK);
-    if(data->map[y][x] == '1')
+    printf("Touching at grid (%d, %d)\n", x, y);
+    if(data->map.grid[y][x] == '1')
         return true;
     return false;
 }
