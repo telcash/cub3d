@@ -34,8 +34,7 @@ static int	check_color_line(char *line)
 
 static int	check_color_values(t_rgb *color)
 {
-	return (color->r > 255 || color->r < 0 || color->g > 255 || color->g < 0
-		|| color->b > 255 || color->b < 0);
+	return (color->r > 255 || color->g > 255 || color->b > 255);
 }
 
 int	get_color_from_line(char *line, int i, t_rgb **color)
