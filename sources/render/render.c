@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:03:18 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/21 09:57:59 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/21 10:11:26 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,7 +310,7 @@ void    draw_line(t_data *data, float start_x, int column)
     render_column(data, &ray, column);
 }
 
-int    draw_loop(t_data *data)
+void draw_scene(t_data *data)
 {
     float        fraction;
     float        start_x;
@@ -318,19 +318,25 @@ int    draw_loop(t_data *data)
     t_player    *player;
 
     player = &data->player;
-    if (move_player(player))
+    clear_image(data);
+    fraction = PI / 3 / WIDTH;
+    start_x = player->angle - (PI / 6);
+    i = 0;
+    while (i < WIDTH)
     {
-        clear_image(data);
-        fraction = PI / 3 / WIDTH;
-        start_x = player->angle - (PI / 6);
-        i = 0;
-        while (i < WIDTH)
-        {
-            draw_line(data, start_x, i);
-            start_x = start_x + fraction;
-            i++;
-        }
-        mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+        draw_line(data, start_x, i);
+        start_x = start_x + fraction;
+        i++;
     }
+    mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+}
+
+int    draw_loop(t_data *data)
+{
+    t_player    *player;
+
+    player = &data->player;
+    if (move_player(player))
+        draw_scene(data);
     return (0);
 }

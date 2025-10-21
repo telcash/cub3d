@@ -124,5 +124,6 @@ int load_textures(t_data *data);
 void reset_data_img(t_data *data);
 void close_app(t_data *data);
 int close_window(t_data *data);
+void draw_scene(t_data *data);
 
 #endif
