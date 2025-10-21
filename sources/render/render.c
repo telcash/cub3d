@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:03:18 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/21 10:46:48 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/21 11:23:20 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ bool	touch(float px, float py, t_data *data)
 	y = (int)(py / BLOCK);
 	if (x < 0 || x >= data->map.width || y < 0 || y >= data->map.height)
 		return (true);
-	if (data->map.grid[y][x] == '1' || data->map.grid[y][x] == ' ')
+	if (data->map.grid[y][x] == '1')
 		return (true);
 	return (false);
 }

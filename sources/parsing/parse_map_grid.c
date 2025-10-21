@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:44:22 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/21 10:48:00 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/21 11:29:45 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,72 @@ static void	set_player_start(t_data *data)
 	set_angle_from_view(&data->player);
 }
 
+static void	normalize_map_grid(t_map *map)
+{
+	int		i;
+	int j;
+	size_t	len;
+	size_t	content_len;
+	size_t	target;
+	size_t	copy_len;
+	size_t	index;
+	char	*row;
+	char	*new_row;
+
+	i = 0;
+	while (map->grid[i])
+	{
+		j = 0;
+		while (map->grid[i][j])
+		{
+			if (map->grid[i][j] == ' ')
+				map->grid[i][j] = '1';
+			j++;
+		}
+		i++;
+	}
+	target = (size_t)map->width;
+	i = 0;
+	while (map->grid[i])
+	{
+		row = map->grid[i];
+		len = ft_strlen(row);
+		if (len > 0 && row[len - 1] == '\n')
+			content_len = len - 1;
+		else
+			content_len = len;
+		if (content_len == target && len > 0 && row[len - 1] == '\n')
+		{
+			i++;
+			continue ;
+		}
+		if (content_len > target)
+			copy_len = target;
+		else
+			copy_len = content_len;
+		new_row = malloc(target + 2);
+		if (!new_row)
+			return ;
+		index = 0;
+		while (index < copy_len)
+		{
+			new_row[index] = row[index];
+			index++;
+		}
+		while (index < target)
+		{
+			new_row[index] = '1';
+			index++;
+		}
+		new_row[index] = '\n';
+		index++;
+		new_row[index] = '\0';
+		free(row);
+		map->grid[i] = new_row;
+		i++;
+	}
+}
+
 int	get_map_grid(t_data *data, char *file)
 {
 	int		fd;
@@ -107,6 +173,7 @@ int	get_map_grid(t_data *data, char *file)
 	copy_map_grid(data, fd);
 	if (verify_map_borders(&data->map))
 		return (ft_putendl_fd(OPEN_MAP, 2), 1);
+	normalize_map_grid(&data->map);
 	set_player_start(data);
 	return (close(fd), 0);
 }
