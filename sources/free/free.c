@@ -6,11 +6,37 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:21:05 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/21 09:02:25 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/21 09:36:34 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/Cube3D.h"
+
+void close_app(t_data *data)
+{
+	int i;
+
+	i = 0;
+	if (data->no_texture)
+		free(data->no_texture);
+	if (data->so_texture)
+		free(data->so_texture);
+	if (data->we_texture)
+		free(data->we_texture);
+	if (data->ea_texture)
+		free(data->ea_texture);
+	while (data->map.grid && data->map.grid[i])
+	{
+		free(data->map.grid[i]);
+		i++;
+	}
+	if (data->map.grid)
+		free(data->map.grid);
+	reset_data_img(data);
+	if (data->mlx && data->win)
+		mlx_destroy_window(data->mlx, data->win);
+	exit(0);
+}
 
 void reset_data_img(t_data *data)
 {

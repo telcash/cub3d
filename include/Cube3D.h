@@ -11,6 +11,7 @@
 # define D 100
 # define LEFT 65361
 # define RIGHT 65363
+# define ESC 65307
 
 # define PI 3.14159265359
 
@@ -106,8 +107,8 @@ typedef struct s_data
     t_player player;
 }            t_data;
 
-int    key_press(int keycode, t_player *player);
-int    key_release(int keycode, t_player *player);
+int    key_press(int keycode, t_data *data);
+int    key_release(int keycode, t_data *data);
 int move_player(t_player *player);
 int draw_loop(t_data *data);
 int init_data(t_data *data, char *file);
@@ -121,5 +122,7 @@ int get_map_grid(t_data *data, char *file);
 int rgb_to_hex(t_rgb *color);
 int load_textures(t_data *data);
 void reset_data_img(t_data *data);
+void close_app(t_data *data);
+int close_window(t_data *data);
 
 #endif

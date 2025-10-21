@@ -6,42 +6,50 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 09:59:12 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/15 10:02:30 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/21 09:36:34 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/Cube3D.h"
 
-int key_press(int keycode, t_player *player)
+int key_press(int keycode, t_data *data)
 {
     if(keycode == W)
-        player->key_up = true;
+        data->player.key_up = true;
     if(keycode == S)
-        player->key_down = true;
+        data->player.key_down = true;
     if(keycode == A)
-        player->key_left = true;
+        data->player.key_left = true;
     if(keycode == D)
-        player->key_right = true;
+        data->player.key_right = true;
     if(keycode == LEFT)
-        player->rot_left = true;
+        data->player.rot_left = true;
     if(keycode == RIGHT)
-        player->rot_right = true;
+        data->player.rot_right = true;
+    if(keycode == ESC)
+        close_app(data);
     return 0;
 }
 
-int key_release(int keycode, t_player *player)
+int key_release(int keycode, t_data *data)
 {
     if(keycode == W)
-        player->key_up = false;
+        data->player.key_up = false;
     if(keycode == S)
-        player->key_down = false;
+        data->player.key_down = false;
     if(keycode == A)
-        player->key_left = false;
+        data->player.key_left = false;
     if(keycode == D)
-        player->key_right = false;
+        data->player.key_right = false;
     if(keycode == LEFT)
-        player->rot_left = false;
+        data->player.rot_left = false;
     if(keycode == RIGHT)
-        player->rot_right = false;
+        data->player.rot_right = false;
+    return 0;
+}
+
+int close_window(t_data *data)
+{
+    close_app(data);
     return 0;
 }

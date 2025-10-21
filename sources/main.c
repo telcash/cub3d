@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 19:45:25 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/21 09:02:25 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/21 09:36:34 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,9 @@ int	main(int argc, char **argv)
 	if (verify_args(argc, argv) || init_data(&data, argv[1]))
 		return (1);
 	print_test(&data);
-	mlx_hook(data.win, 2, 1L << 0, key_press, &data.player);
-	mlx_hook(data.win, 3, 1L << 1, key_release, &data.player);
+	mlx_hook(data.win, 2, 1L << 0, key_press, &data);
+	mlx_hook(data.win, 3, 1L << 1, key_release, &data);
+	mlx_hook(data.win, 17, 0, close_window, &data);
 	mlx_loop_hook(data.mlx, draw_loop, &data);
 	mlx_loop(data.mlx);
 }
