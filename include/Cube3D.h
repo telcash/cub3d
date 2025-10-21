@@ -119,7 +119,7 @@ int parse_file(t_data *data, char *file);
 int get_color_from_line(char *line, int i, t_rgb **color);
 int get_map_grid(t_data *data, char *file);
 int rgb_to_hex(t_rgb *color);
-int init_textures(t_data *data);
+int load_textures(t_data *data);
 void reset_data_img(t_data *data);
 
 #endif
