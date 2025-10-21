@@ -28,9 +28,9 @@ static void	init_textures(t_data *data)
 
 static void	init_player(t_player *player)
 {
-	player->x = WIDTH / 2;
-	player->y = HEIGHT / 2;
-	player->angle = PI / 2;
+	player->x = 0;
+	player->y = 0;
+	player->angle = 0;
 	player->view = '\0';
 	player->row = 0;
 	player->col = 0;

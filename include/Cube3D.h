@@ -50,6 +50,31 @@ enum e_line_reading_status
     DONE = 2
 };
 
+typedef struct s_ray
+{
+    float    angle;
+    float    pos_x;
+    float    pos_y;
+    float    dir_x;
+    float    dir_y;
+    float    delta_x;
+    float    delta_y;
+    float    side_x;
+    float    side_y;
+    float    perp_dist;
+    float    wall_x;
+    float    tex_step;
+    float    tex_pos;
+    int        map_x;
+    int        map_y;
+    int        step_x;
+    int        step_y;
+    int        side;
+    int        tex_x;
+    int        line_height;
+    int        *texture;
+}            t_ray;
+
 typedef struct s_rgb
 {
     unsigned int r;

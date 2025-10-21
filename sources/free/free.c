@@ -6,15 +6,15 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:21:05 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/21 09:36:34 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/21 10:48:51 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/Cube3D.h"
 
-void close_app(t_data *data)
+void	close_app(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (data->no_texture)
@@ -38,7 +38,7 @@ void close_app(t_data *data)
 	exit(0);
 }
 
-void reset_data_img(t_data *data)
+void	reset_data_img(t_data *data)
 {
 	if (data->img)
 		mlx_destroy_image(data->mlx, data->img);

@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:44:22 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/20 08:59:08 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/21 10:48:00 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,38 @@ static void	copy_map_grid(t_data *data, int fd)
 	data->map.grid[row] = NULL;
 }
 
+static void	set_angle_from_view(t_player *player)
+{
+	if (player->view == 'E')
+		player->angle = 0;
+	else if (player->view == 'S')
+		player->angle = PI / 2;
+	else if (player->view == 'W')
+		player->angle = PI;
+	else
+		player->angle = (3 * PI) / 2;
+}
+
+static void	set_player_start(t_data *data)
+{
+	int		row;
+	int		col;
+	float	center;
+
+	row = data->player.row;
+	col = data->player.col;
+	center = 0.5f;
+	data->player.x = ((float)col + center) * BLOCK;
+	data->player.y = ((float)row + center) * BLOCK;
+	data->map.grid[row][col] = '0';
+	set_angle_from_view(&data->player);
+}
+
 int	get_map_grid(t_data *data, char *file)
 {
-	int fd;
-	char *line;
-	int lines_readed;
+	int		fd;
+	char	*line;
+	int		lines_readed;
 
 	lines_readed = 0;
 	fd = open(file, O_RDONLY);
@@ -80,5 +107,6 @@ int	get_map_grid(t_data *data, char *file)
 	copy_map_grid(data, fd);
 	if (verify_map_borders(&data->map))
 		return (ft_putendl_fd(OPEN_MAP, 2), 1);
-    return (close(fd), 0);
+	set_player_start(data);
+	return (close(fd), 0);
 }
