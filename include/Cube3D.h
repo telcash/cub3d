@@ -150,5 +150,15 @@ void reset_data_img(t_data *data);
 void close_app(t_data *data);
 int close_window(t_data *data);
 void draw_scene(t_data *data);
+void init_ray(t_data *data, t_ray *ray, float angle);
+float inverse_abs(float value);
+void run_dda(t_data *data, t_ray *ray);
+void render_column(t_data *data, t_ray *ray, int column);
+void put_pixel(int x, int y, int color, t_data *data);
+void compute_perp_distance(t_ray *ray);
+void select_texture(t_data *data, t_ray *ray);
+void setup_wall(t_data *data, t_ray *ray);
+void set_player_start(t_data *data);
+void normalize_map_grid(t_map *map);
 
 #endif

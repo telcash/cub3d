@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:40:33 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/21 09:02:25 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/22 15:56:55 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int	get_texture_file(char *line, int i, char **texture_file)
 		(*texture_file)[ft_strlen(*texture_file) - 1] = '\0';
 	if (ft_strlen(*texture_file) < 5
 		|| ft_strncmp(&(*texture_file)[ft_strlen(*texture_file) - 4], ".xpm",
-			4) != 0)
+		4) != 0)
 		return (ft_putendl_fd(ERR_FILE_XPM, 2), 1);
 	return (0);
 }

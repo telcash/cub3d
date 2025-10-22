@@ -6,13 +6,13 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 19:45:25 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/21 10:11:01 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/22 16:30:55 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/Cube3D.h"
 
-void	print_test(t_data *data)
+/* void	print_test(t_data *data)
 {
 	int	h;
 	int	w;
@@ -35,13 +35,10 @@ void	print_test(t_data *data)
 	{
 		w = 0;
 		while (data->map.grid[h][w])
-		{
-			printf("%c", data->map.grid[h][w]);
-			w++;
-		}
+			printf("%c", data->map.grid[h][w++]);
 		h++;
 	}
-}
+} */
 
 int	main(int argc, char **argv)
 {
@@ -49,7 +46,7 @@ int	main(int argc, char **argv)
 
 	if (verify_args(argc, argv) || init_data(&data, argv[1]))
 		return (1);
-	print_test(&data);
+	//print_test(&data);
 	mlx_hook(data.win, 2, 1L << 0, key_press, &data);
 	mlx_hook(data.win, 3, 1L << 1, key_release, &data);
 	mlx_hook(data.win, 17, 0, close_window, &data);
