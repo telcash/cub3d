@@ -33,6 +33,7 @@
 # define OPEN_MAP "Invalid map, the map must be surrounded by walls"
 # define MISSING_TEXTURES_ERR "Error: Missing textures or colors in data file"
 # define TEXTURE_FILE_ERR "Error: Could not load texture file"
+# define NO_MAP_DATA "Error: No map grid data found in file"
 
 # include "libft.h"
 # include "mlx.h"
@@ -159,6 +160,7 @@ void compute_perp_distance(t_ray *ray);
 void select_texture(t_data *data, t_ray *ray);
 void setup_wall(t_data *data, t_ray *ray);
 void set_player_start(t_data *data);
-void normalize_map_grid(t_map *map);
+int normalize_map_grid(t_map *map);
+int verify_params_complete(t_data *data);
 
 #endif

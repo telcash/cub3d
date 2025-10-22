@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 16:00:53 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/22 16:28:05 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/22 16:53:34 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	set_new_row(t_map *map, int i, size_t copy_len)
 
 	new_row = malloc((size_t)map->width + 2);
 	if (!new_row)
-		return (1);
+		return (ft_putendl_fd(ERR_MALLOC, 2), 1);
 	index = -1;
 	while (++index < copy_len)
 		new_row[index] = map->grid[i][index];
@@ -52,7 +52,7 @@ static int	set_new_row(t_map *map, int i, size_t copy_len)
 	return (0);
 }
 
-void	normalize_map_grid(t_map *map)
+int	normalize_map_grid(t_map *map)
 {
 	int		i;
 	size_t	len;
@@ -73,8 +73,9 @@ void	normalize_map_grid(t_map *map)
 			if (content_len > (size_t)map->width)
 				content_len = (size_t)map->width;
 			if (set_new_row(map, i, content_len))
-				return ;
+				return (1);
 		}
 		i++;
 	}
+	return (0);
 }

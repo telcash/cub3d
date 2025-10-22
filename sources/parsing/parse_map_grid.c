@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:44:22 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/22 16:29:38 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/22 16:53:34 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ int	get_map_grid(t_data *data, char *file)
 	copy_map_grid(data, fd);
 	if (verify_map_borders(&data->map))
 		return (ft_putendl_fd(OPEN_MAP, 2), 1);
-	normalize_map_grid(&data->map);
+	if (normalize_map_grid(&data->map))
+		return (1);
 	set_player_start(data);
 	return (close(fd), 0);
 }

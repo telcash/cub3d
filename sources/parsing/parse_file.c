@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/16 10:40:33 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/22 15:56:55 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/22 16:56:47 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,9 +119,7 @@ int	parse_file(t_data *data, char *file)
 		free(line);
 		line = get_next_line(fd);
 	}
-	if (data->map.height < 3 || data->map.width < 3)
-		return (close(fd), ft_putendl_fd(BAD_MAP_DIMS, 2), 1);
-	if (data->player.view == '\0')
-		return (close(fd), ft_putendl_fd(NO_PLAYER, 2), 1);
+	if (verify_params_complete(data))
+		return (close(fd), 1);
 	return (close(fd), get_map_grid(data, file));
 }

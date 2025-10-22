@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 10:15:59 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/21 09:14:32 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/22 16:58:30 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,6 @@ static int	get_texture(t_data *data, char *file, int **texture)
 
 int	load_textures(t_data *data)
 {
-	if (!data->no_t_file || !data->so_t_file || !data->we_t_file
-		|| !data->ea_t_file || !data->f || !data->c)
-		return (ft_putendl_fd(MISSING_TEXTURES_ERR, 2), 1);
 	data->ceiling_color = rgb_to_hex(data->c);
 	data->floor_color = rgb_to_hex(data->f);
 	data->texture_size = 0;
