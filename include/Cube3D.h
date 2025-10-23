@@ -162,5 +162,6 @@ void setup_wall(t_data *data, t_ray *ray);
 void set_player_start(t_data *data);
 int normalize_map_grid(t_map *map);
 int verify_params_complete(t_data *data);
+void	free_map_grid_partial(t_map *map, int rows_copied);
 
 #endif

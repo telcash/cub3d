@@ -12,6 +12,20 @@
 
 #include "../../include/Cube3D.h"
 
+void	free_map_grid_partial(t_map *map, int rows_copied)
+{
+	int i;
+
+	i = 0;
+	while (i < rows_copied)
+	{
+		free(map->grid[i]);
+		i++;
+	}
+	free(map->grid);
+	map->grid = NULL;
+} //Para error ft_strdup liberar  lo copiado hasta el momento
+
 void	close_app(t_data *data)
 {
 	int	i;
