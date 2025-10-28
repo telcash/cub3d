@@ -34,6 +34,8 @@
 # define MISSING_TEXTURES_ERR "Error: Missing textures or colors in data file"
 # define TEXTURE_FILE_ERR "Error: Could not load texture file"
 # define NO_MAP_DATA "Error: No map grid data found in file"
+# define MAP_FEW_LINES "Error: map has fewer lines than expected"
+# define EXTRA_MAP_CONTENT "Error: extra content after map"
 
 # include "libft.h"
 # include "mlx.h"

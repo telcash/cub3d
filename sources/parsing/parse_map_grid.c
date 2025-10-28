@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:44:22 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/22 16:53:34 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:44:04 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,16 @@ static int	verify_map_borders(t_map *map)
 	return (0);
 }
 
+static int	check_extra_content(t_data *data, char *line, int row)
+{
+	if (line)
+	{
+		free(line);
+		free_map_grid_partial(&data->map, row);
+		return (ft_putendl_fd(EXTRA_MAP_CONTENT, 2), 1);
+	}
+}
+
 static int	copy_map_grid(t_data *data, int fd)
 {
 	char	*line;
@@ -51,13 +61,10 @@ static int	copy_map_grid(t_data *data, int fd)
 	{
 		line = get_next_line(fd);
 		if (!line)
-		{
-			ft_putendl_fd("Error: map has fewer lines than expected", 2);
-			return (1);
-		}
+			return (ft_putendl_fd(MAP_FEW_LINES, 2), 1);
 		data->map.grid[row] = ft_strdup(line);
 		free(line);
-		if (!data->map.grid[row]) /* fallo ft_strdup */
+		if (!data->map.grid[row])
 		{
 			free_map_grid_partial(&data->map, row);
 			return (ft_putendl_fd(ERR_MALLOC, 2), 1);
@@ -65,12 +72,8 @@ static int	copy_map_grid(t_data *data, int fd)
 		row++;
 	}
 	line = get_next_line(fd);
-	if (line)
-	{
-		free(line);
-		free_map_grid_partial(&data->map, row);
-		return (ft_putendl_fd("Error: extra content after map", 2), 1);
-	}
+	if (check_extra_content(data, line, row))
+		return (1);
 	data->map.grid[row] = NULL;
 	return (0);
 }
@@ -96,10 +99,10 @@ int	get_map_grid(t_data *data, char *file)
 	if (copy_map_grid(data, fd))
 		return (close(fd), 1);
 	if (verify_map_borders(&data->map))
-		return (ft_putendl_fd(OPEN_MAP, 2), (free_map_grid_partial(&data->map, data->map.height), close(fd)), 1);
+		return (ft_putendl_fd(OPEN_MAP, 2), (free_map_grid_partial(&data->map,
+					data->map.height), close(fd)), 1);
 	if (normalize_map_grid(&data->map))
 		return (close(fd), 1);
 	set_player_start(data);
-	close(fd);
-	return (0);
+	return (close(fd), 0);
 }

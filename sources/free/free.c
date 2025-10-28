@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:21:05 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/21 10:48:51 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:39:06 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_map_grid_partial(t_map *map, int rows_copied)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < rows_copied)
@@ -24,7 +24,7 @@ void	free_map_grid_partial(t_map *map, int rows_copied)
 	}
 	free(map->grid);
 	map->grid = NULL;
-} //Para error ft_strdup liberar  lo copiado hasta el momento
+}
 
 void	close_app(t_data *data)
 {
