@@ -15,6 +15,8 @@
 
 # define PI 3.14159265359
 
+#define COLLISION_RADIUS 10.0f
+
 # define ERR_MALLOC "Error allocating memory"
 # define ERR_NUM_ARGS "Invalid number of arguments"
 # define ERR_FILE_CUB "Invalid file. Expected *.cub"
@@ -137,7 +139,8 @@ typedef struct s_data
 
 int    key_press(int keycode, t_data *data);
 int    key_release(int keycode, t_data *data);
-int move_player(t_player *player);
+void player_apply_movement(t_data *data, float delta_x, float delta_y);
+int move_player(t_data *data);
 int draw_loop(t_data *data);
 int init_data(t_data *data, char *file);
 int verify_args(int argc, char **argv);

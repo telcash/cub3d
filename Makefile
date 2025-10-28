@@ -22,7 +22,7 @@ MLX = $(MLX_DIR)/libmlx.a
 SRCS = $(addprefix $(SRC_DIR)/, main.c) \
 			$(addprefix $(SRC_DIR)/input/, input.c) \
 			$(addprefix $(SRC_DIR)/render/, render_1.c render_2.c render_3.c) \
-			$(addprefix $(SRC_DIR)/player/, player.c) \
+			$(addprefix $(SRC_DIR)/player/, player.c player_collision.c) \
 			$(addprefix $(SRC_DIR)/init/, init.c) \
 			$(addprefix $(SRC_DIR)/parsing/, verify.c parse_color.c parse_file.c parse_map_grid.c normalize_map_grid.c) \
 			$(addprefix $(SRC_DIR)/utils/, utils_1.c) \

@@ -6,35 +6,35 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 10:04:39 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/22 15:59:52 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/28 18:48:16 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/Cube3D.h"
 
-static void	translate_player(t_player *player, float cos_angle, float sin_angle,
+static void	translate_player(t_data *data, float cos_angle, float sin_angle,
 		int speed)
 {
+	t_player	*player;
+	int			forward;
+	int			strafe;
+	float		move_x;
+	float		move_y;
+
+	player = &data->player;
+	forward = 0;
 	if (player->key_up)
-	{
-		player->x += cos_angle * speed;
-		player->y += sin_angle * speed;
-	}
+		forward += 1;
 	if (player->key_down)
-	{
-		player->x -= cos_angle * speed;
-		player->y -= sin_angle * speed;
-	}
-	if (player->key_left)
-	{
-		player->x += sin_angle * speed;
-		player->y -= cos_angle * speed;
-	}
+		forward -= 1;
+	strafe = 0;
 	if (player->key_right)
-	{
-		player->x -= sin_angle * speed;
-		player->y += cos_angle * speed;
-	}
+		strafe += 1;
+	if (player->key_left)
+		strafe -= 1;
+	move_x = (cos_angle * forward - sin_angle * strafe) * speed;
+	move_y = (sin_angle * forward + cos_angle * strafe) * speed;
+	player_apply_movement(data, move_x, move_y);
 }
 
 static void	rotate_player(t_player *player, float angle_speed)
@@ -49,19 +49,21 @@ static void	rotate_player(t_player *player, float angle_speed)
 		player->angle = 2 * PI;
 }
 
-int	move_player(t_player *player)
+int	move_player(t_data *data)
 {
-	int		speed;
-	float	angle_speed;
-	float	cos_angle;
-	float	sin_angle;
+	int			speed;
+	float		angle_speed;
+	float		cos_angle;
+	float		sin_angle;
+	t_player	*player;
 
+	player = &data->player;
 	speed = 3;
 	angle_speed = 0.03;
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
 	rotate_player(player, angle_speed);
-	translate_player(player, cos_angle, sin_angle, speed);
+	translate_player(data, cos_angle, sin_angle, speed);
 	return (player->rot_left || player->rot_right || player->key_up
 		|| player->key_down || player->key_left || player->key_right);
 }

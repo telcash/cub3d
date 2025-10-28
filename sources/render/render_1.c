@@ -77,10 +77,7 @@ void	draw_scene(t_data *data)
 
 int	draw_loop(t_data *data)
 {
-	t_player	*player;
-
-	player = &data->player;
-	if (move_player(player))
+	if (move_player(data))
 		draw_scene(data);
 	return (0);
 }
