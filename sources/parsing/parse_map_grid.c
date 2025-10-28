@@ -6,7 +6,7 @@
 /*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:44:22 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/28 17:44:04 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/28 17:55:29 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ static int	check_extra_content(t_data *data, char *line, int row)
 		free_map_grid_partial(&data->map, row);
 		return (ft_putendl_fd(EXTRA_MAP_CONTENT, 2), 1);
 	}
+	return (0);
 }
 
 static int	copy_map_grid(t_data *data, int fd)

@@ -67,10 +67,14 @@ void	select_texture(t_data *data, t_ray *ray)
 
 void	setup_wall(t_data *data, t_ray *ray)
 {
-	int	line_height;
-	int	tex_size;
+	float	corrected_dist;
+	int		line_height;
+	int		tex_size;
 
-	line_height = (int)(HEIGHT / ray->perp_dist);
+	corrected_dist = ray->perp_dist * cosf(ray->angle - data->player.angle);
+	if (corrected_dist < 0.0001f)
+		corrected_dist = 0.0001f;
+	line_height = (int)(HEIGHT / corrected_dist);
 	if (line_height < 1)
 		line_height = 1;
 	ray->line_height = line_height;
